@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Villa - Realtà Aumentata</title>
+
+  <script type="module"
+    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js">
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      background: #f4f3ef;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: #222;
+    }
+
+    .titolo {
+      padding: 25px 20px 5px;
+      font-size: 24px;
+    }
+
+    .sottotitolo {
+      padding: 0 20px 10px;
+      font-size: 15px;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 70vh;
+    }
+
+    .ar-button {
+      background: #111;
+      color: white;
+      border: 0;
+      border-radius: 30px;
+      padding: 15px 24px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="titolo">Immaginare non basta più.</div>
+
+  <div class="sottotitolo">
+    Guarda il progetto in 3D oppure appoggialo davanti a te.
+  </div>
+
+  <model-viewer
+    src="villa.glb"
+    alt="Modello tridimensionale della villa"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    ar-placement="floor"
+    ar-scale="fixed">
+
+    <button slot="ar-button" class="ar-button">
+      VEDI SUL TAVOLO
+    </button>
+
+  </model-viewer>
+
+</body>
+</html>
