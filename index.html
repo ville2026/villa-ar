@@ -1,75 +1,153 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Villa - Realtà Aumentata</title>
+<title>Villa - Realtà Aumentata</title>
 
-  <script type="module"
-    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js">
-  </script>
+<script type="module"
+src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js">
+</script>
 
-  <style>
-    body {
-      margin: 0;
-      background: #f4f3ef;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      color: #222;
-    }
+<style>
 
-    .titolo {
-      padding: 25px 20px 5px;
-      font-size: 24px;
-    }
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
 
-    .sottotitolo {
-      padding: 0 20px 10px;
-      font-size: 15px;
-    }
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f3ef;
+    color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 
-    model-viewer {
-      width: 100%;
-      height: 70vh;
-    }
+.contenuto {
+    width: 90%;
+    max-width: 500px;
+}
 
-    .ar-button {
-      background: #111;
-      color: white;
-      border: 0;
-      border-radius: 30px;
-      padding: 15px 24px;
-      font-size: 16px;
-      font-weight: bold;
-    }
-  </style>
+h1 {
+    font-size: 30px;
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+button {
+    background: #111;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 18px 30px;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.5;
+}
+
+.piccolo {
+    margin-top: 20px;
+    font-size: 13px;
+    opacity: 0.65;
+}
+
+/* Il modello viene caricato ma NON viene mostrato */
+model-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+</style>
 </head>
 
 <body>
 
-  <div class="titolo">Immaginare non basta più.</div>
-
-  <div class="sottotitolo">
-    Guarda il progetto in 3D oppure appoggialo davanti a te.
-  </div>
-
-  <model-viewer
+<model-viewer
+    id="modelloAR"
+    loading="eager"
     src="villa.glb"
-    alt="Modello tridimensionale della villa"
-    camera-controls
-    auto-rotate
-    shadow-intensity="1"
+    ios-src="villa.usdz"
     ar
-    ar-modes="webxr scene-viewer quick-look"
+    ar-modes="scene-viewer quick-look"
     ar-placement="floor"
     ar-scale="fixed">
+</model-viewer>
 
-    <button slot="ar-button" class="ar-button">
-      VEDI SUL TAVOLO
+<div class="contenuto">
+
+    <h1>Immaginare non basta più.</h1>
+
+    <p>
+        Guarda il progetto direttamente nel tuo spazio.
+    </p>
+
+    <button id="pulsanteAR" disabled>
+        PREPARAZIONE...
     </button>
 
-  </model-viewer>
+    <div class="piccolo" id="messaggio">
+        Nessuna app da installare.
+    </div>
+
+</div>
+
+<script>
+
+const modello = document.getElementById("modelloAR");
+const pulsante = document.getElementById("pulsanteAR");
+const messaggio = document.getElementById("messaggio");
+
+modello.addEventListener("load", () => {
+
+    pulsante.disabled = false;
+    pulsante.innerText = "APRI IN REALTÀ AUMENTATA";
+
+});
+
+pulsante.addEventListener("click", async () => {
+
+    if (!modello.canActivateAR) {
+
+        messaggio.innerText =
+        "La realtà aumentata non è disponibile su questo dispositivo.";
+
+        return;
+    }
+
+    try {
+
+        await modello.activateAR();
+
+    } catch (errore) {
+
+        messaggio.innerText =
+        "Non è stato possibile avviare la realtà aumentata.";
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
